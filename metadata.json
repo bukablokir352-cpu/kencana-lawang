@@ -1,0 +1,6 @@
+{
+  "name": "Buku Profil & Album Kencana Award 2026 Kecamatan Lawang",
+  "description": "Buku Profil, Album Dokumentasi A4, dan Portal Interaktif Gerakan Kecamatan Tangguh Bencana (Kencana) 2026 Kecamatan Lawang, Kabupaten Malang.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

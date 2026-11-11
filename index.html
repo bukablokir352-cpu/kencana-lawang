@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Silence benign Vite dev WebSocket transport errors in iFrame sandbox environment
+      window.addEventListener('error', function(e) {
+        var msg = (e && (e.message || (e.error && e.error.message))) || '';
+        var file = (e && e.filename) || '';
+        if (msg.includes('WebSocket') || msg.includes('createWebSocketModuleRunnerTransport') || file.includes('@vite/client')) {
+          e.preventDefault();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          return true;
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function(e) {
+        var reason = (e && e.reason && (e.reason.message || e.reason.stack || String(e.reason))) || '';
+        if (reason.includes('WebSocket') || reason.includes('createWebSocketModuleRunnerTransport') || reason.includes('@vite/client')) {
+          e.preventDefault();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          return true;
+        }
+      }, true);
+    </script>
+    <title>Buku Profil & Album Kencana Award 2026 Kecamatan Lawang</title>
+    <meta name="description" content="Buku Profil, Album Dokumentasi A4, dan Portal Interaktif Gerakan Kecamatan Tangguh Bencana (Kencana) 2026 Kecamatan Lawang, Kabupaten Malang." />
+    <meta property="og:title" content="Buku Profil & Album Kencana Award 2026 Kecamatan Lawang" />
+    <meta property="og:description" content="Buku Profil, Album Dokumentasi A4, dan Portal Interaktif Gerakan Kecamatan Tangguh Bencana (Kencana) 2026 Kecamatan Lawang, Kabupaten Malang." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-orange-500 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
