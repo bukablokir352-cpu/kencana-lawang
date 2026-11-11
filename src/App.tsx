@@ -6,9 +6,10 @@ import { PrintA4Document } from './components/PrintA4Document';
 import { WebInteractivePortal } from './components/WebInteractivePortal';
 import { PhotoModal } from './components/PhotoModal';
 import { PhotoLightbox } from './components/PhotoLightbox';
+import { supabase, isCloudConfigured } from './lib/supabase';
 import { ShieldCheck, Printer, RefreshCw, FileText, CheckCircle2, AlertTriangle, X } from 'lucide-react';
 
-const LOCAL_STORAGE_KEY = 'kencana_bound_photos_a4_v4';
+const LOCAL_STORAGE_KEY = 'kencana_bound_photos_a4_v5_cloud';
 
 // Automatically sanitizes and corrects known sentence discrepancies
 function sanitizePhotos(photosList: Photo[]): Photo[] {
@@ -25,6 +26,46 @@ function sanitizePhotos(photosList: Photo[]): Photo[] {
     }
     return { ...p, desc };
   });
+}
+
+// Cloud (Supabase) row shape for a photo
+interface PhotoRow {
+  photo_id: string;
+  title: string;
+  category: string;
+  url: string;
+  desc: string;
+  date: string | null;
+  location: string | null;
+  photographer: string | null;
+  sort_order: number;
+}
+
+function toRow(p: Photo, index: number): PhotoRow {
+  return {
+    photo_id: String(p.id),
+    title: p.title,
+    category: p.category,
+    url: p.url,
+    desc: p.desc || '',
+    date: p.date ?? null,
+    location: p.location ?? null,
+    photographer: p.photographer ?? null,
+    sort_order: index,
+  };
+}
+
+function fromRow(r: PhotoRow): Photo {
+  return {
+    id: r.photo_id,
+    title: r.title,
+    category: r.category as PhotoCategory,
+    url: r.url,
+    desc: r.desc,
+    date: r.date ?? undefined,
+    location: r.location ?? undefined,
+    photographer: r.photographer ?? undefined,
+  };
 }
 
 interface ConfirmDialogState {
@@ -83,83 +124,102 @@ export default function App() {
     }, 3500);
   };
 
-  // 1. Initial Load: Fetch shared photos from server backend (/api/photos)
+  // 1. Initial Load: fetch the shared album from the cloud database (works in
+  // preview AND on the published site). If the cloud album is empty, seed it
+  // with the official default photos. localStorage is only a fast cache.
   useEffect(() => {
+    if (!isCloudConfigured || !supabase) {
+      setSyncStatus('idle');
+      return;
+    }
     let isMounted = true;
-    async function loadServerPhotos() {
+
+    async function loadCloudPhotos() {
       try {
-        const res = await fetch('/api/photos');
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.photos && Array.isArray(data.photos) && data.photos.length > 0) {
-            if (isMounted) {
-              const cleaned = sanitizePhotos(data.photos);
-              setPhotos(cleaned);
-              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cleaned));
-              setSyncStatus('synced');
-            }
-            return;
+        const { data, error } = await supabase!
+          .from('kencana_photo_album')
+          .select('*')
+          .order('sort_order', { ascending: true });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          if (isMounted) {
+            const cleaned = sanitizePhotos(data.map(fromRow));
+            setPhotos(cleaned);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cleaned));
+            setSyncStatus('synced');
           }
+          return;
         }
-        
-        // If server is clean/empty but this browser already has custom photos in localStorage,
-        // automatically push localStorage photos to the server so all other computers get them!
-        const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (stored) {
-          try {
-            const parsed = JSON.parse(stored);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              await fetch('/api/photos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ photos: parsed })
-              });
-              if (isMounted) setSyncStatus('synced');
-            }
-          } catch (e) {
-            console.error('Error parsing stored photos for server seed:', e);
-          }
+
+        // Empty cloud album: seed it with the official default photos so the
+        // published site shows the same album as the preview.
+        const rows = INITIAL_PHOTOS.map(toRow);
+        const { error: seedError } = await supabase!
+          .from('kencana_photo_album')
+          .insert(rows);
+        if (seedError) throw seedError;
+
+        if (isMounted) {
+          setPhotos(sanitizePhotos(INITIAL_PHOTOS));
+          setSyncStatus('synced');
         }
       } catch (err) {
-        console.warn('Backend server sync not available, using offline localStorage:', err);
-        if (isMounted) setSyncStatus('idle');
+        console.warn('Cloud album load failed, using local cache:', err);
+        if (isMounted) setSyncStatus('error');
       }
     }
 
-    loadServerPhotos();
+    loadCloudPhotos();
     return () => { isMounted = false; };
   }, []);
 
-  // 2. Auto-sync to both localStorage and server whenever photos change
+  // 2. Auto-sync album changes to the cloud database (debounced)
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
 
-    // Save locally
+    // Save locally as offline cache
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(photos));
     } catch (e) {
       console.error('Failed to save to localStorage:', e);
     }
 
-    // Debounced sync to server backend so all shared computers see the updates
+    if (!isCloudConfigured || !supabase) return;
+
     const timer = setTimeout(async () => {
       try {
         setSyncStatus('saving');
-        const res = await fetch('/api/photos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ photos })
-        });
-        if (res.ok) {
-          setSyncStatus('synced');
-        } else {
-          setSyncStatus('error');
+        const rows = photos.map(toRow);
+        const { error: upsertError } = await supabase!
+          .from('kencana_photo_album')
+          .upsert(rows, { onConflict: 'photo_id' });
+        if (upsertError) throw upsertError;
+
+        // Remove rows the user deleted from the album
+        const keepIds = new Set(rows.map((r) => r.photo_id));
+        const { data: existing, error: selectError } = await supabase!
+          .from('kencana_photo_album')
+          .select('photo_id');
+        if (selectError) throw selectError;
+        const staleIds = (existing ?? [])
+          .map((r) => r.photo_id as string)
+          .filter((id) => !keepIds.has(id));
+        if (staleIds.length > 0) {
+          const { error: deleteError } = await supabase!
+            .from('kencana_photo_album')
+            .delete()
+            .in('photo_id', staleIds);
+          if (deleteError) throw deleteError;
         }
+
+        setSyncStatus('synced');
       } catch (err) {
-        console.warn('Auto-sync to server error:', err);
+        console.warn('Cloud album sync error:', err);
         setSyncStatus('error');
       }
     }, 500);
