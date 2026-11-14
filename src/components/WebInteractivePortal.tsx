@@ -174,19 +174,29 @@ export const WebInteractivePortal: React.FC<WebInteractivePortalProps> = ({
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3 mt-6">
                 <button
+                  onClick={onPrint}
+                  className="bg-red-600 hover:bg-red-500 text-white font-bold px-5 py-3 rounded-xl text-sm transition-all shadow-lg shadow-red-600/40 flex items-center gap-2 cursor-pointer"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Download Profil PDF</span>
+                </button>
+
+                <a
+                  href="https://gerakan-kencana-lawang.netlify.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-3 rounded-xl text-sm transition-all shadow-lg shadow-emerald-600/40 flex items-center gap-2 cursor-pointer"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Buka Dashboard SIKENCANA</span>
+                </a>
+
+                <button
                   onClick={onSwitchToA4}
                   className="bg-orange-600 hover:bg-orange-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-orange-600/30 flex items-center gap-2 cursor-pointer"
                 >
                   <FileText className="w-4 h-4" />
                   <span>Buka Format Lembar Buku A4</span>
-                </button>
-
-                <button
-                  onClick={onPrint}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-4 py-2.5 rounded-xl text-sm transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <Printer className="w-4 h-4 text-orange-400" />
-                  <span>Cetak Buku Lengkap (PDF)</span>
                 </button>
 
                 <button
@@ -197,6 +207,10 @@ export const WebInteractivePortal: React.FC<WebInteractivePortalProps> = ({
                   <span>+ Tambah Foto Dokumentasi</span>
                 </button>
               </div>
+
+              <p className="mt-3 text-[11px] text-slate-400 leading-relaxed max-w-3xl">
+                Sistem Informasi Kencana - Data Capaian 8 TKK, Satgas, Logistik, dan Arsip Surat Kecamatan Lawang
+              </p>
             </div>
 
             {/* Right Hero Card: Quick Posko Status */}

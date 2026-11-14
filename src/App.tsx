@@ -433,7 +433,17 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-[11px]">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-center sm:text-left">
+            <span>Terakhir diperbarui: November 2026</span>
+            <span className="hidden sm:inline text-slate-600">|</span>
+            <span>Kecamatan Lawang, Kabupaten Malang, Jawa Timur</span>
+            <span className="hidden sm:inline text-slate-600">|</span>
+            <span>Email / Kontak: Kecamatan Lawang</span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-[11px]">
+            <span className="text-slate-500">© 2026 Kecamatan Lawang - Gerakan KENCANA</span>
+
             <button
               onClick={() => setViewMode(viewMode === 'web' ? 'a4' : 'web')}
               className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
@@ -452,8 +462,6 @@ export default function App() {
             </button>
 
             <span>Jl. MH. Thamrin No. 2 Lawang</span>
-            <span className="text-slate-600">|</span>
-            <span className="text-slate-500">© 2026 Kencana Lawang</span>
           </div>
         </div>
       </footer>
