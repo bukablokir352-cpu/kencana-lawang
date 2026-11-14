@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Photo, PhotoCategory } from './types/kencana';
 import { INITIAL_PHOTOS } from './data/kencanaData';
-import { Navbar } from './components/Navbar';
+import { Sidebar } from './components/Sidebar';
 import { PrintA4Document } from './components/PrintA4Document';
 import { WebInteractivePortal } from './components/WebInteractivePortal';
 import { PhotoModal } from './components/PhotoModal';
@@ -354,7 +354,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      
+
       {/* Hidden file input for JSON import */}
       <input
         type="file"
@@ -364,8 +364,8 @@ export default function App() {
         className="hidden"
       />
 
-      {/* Top Navigation Bar */}
-      <Navbar
+      {/* Left Sidebar Navigation (vertical menu) */}
+      <Sidebar
         currentTab={currentTab}
         setCurrentTab={(tab) => {
           setCurrentTab(tab);
@@ -389,6 +389,9 @@ export default function App() {
         photoCount={photos.length}
         syncStatus={syncStatus}
       />
+
+      {/* Content column beside the fixed sidebar */}
+      <div className="lg:pl-64 print-reset-pad flex flex-col min-h-screen">
 
       {/* Main Content Area */}
       <main className="flex-1 w-full">
@@ -454,6 +457,8 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      </div>
 
       {/* Add / Edit Photo Modal */}
       <PhotoModal

@@ -59,11 +59,18 @@
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  
+
   .no-print {
     display: none !important;
   }
-  
+
+  /* Sidebar uses a left padding wrapper on large screens; remove it for print */
+  @media (min-width: 1024px) {
+    .print-reset-pad {
+      padding-left: 0 !important;
+    }
+  }
+
   .document-container {
     max-width: 100% !important;
     width: 210mm !important;
