@@ -7,9 +7,12 @@ import { WebInteractivePortal } from './components/WebInteractivePortal';
 import { PhotoModal } from './components/PhotoModal';
 import { PhotoLightbox } from './components/PhotoLightbox';
 import { supabase, isCloudConfigured } from './lib/supabase';
-import { ShieldCheck, Printer, RefreshCw, FileText, CheckCircle2, AlertTriangle, X } from 'lucide-react';
+import { ShieldCheck, Printer, RefreshCw, FileText, CheckCircle2, AlertTriangle, X, Sun, Moon } from 'lucide-react';
 
 const LOCAL_STORAGE_KEY = 'kencana_bound_photos_a4_v5_cloud';
+const THEME_STORAGE_KEY = 'kencana_theme';
+
+export type AppTheme = 'dark' | 'light';
 
 // Automatically sanitizes and corrects known sentence discrepancies
 function sanitizePhotos(photosList: Photo[]): Photo[] {
@@ -101,6 +104,19 @@ export default function App() {
 
   const [viewMode, setViewMode] = useState<'web' | 'a4'>('web');
   const [currentTab, setCurrentTab] = useState<string>('overview');
+
+  // Theme (persisted): default follows system preference on first visit
+  const [theme, setTheme] = useState<AppTheme>(() => {
+    const saved = localStorage.getItem(THEME_STORAGE_KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('theme-light', theme === 'light');
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
   
   // Modals
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
@@ -355,6 +371,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
 
+      {/* Theme toggle (fixed top-right, hidden on print) */}
+      <button
+        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+        title={theme === 'light' ? 'Ganti ke Mode Gelap' : 'Ganti ke Mode Terang'}
+        aria-label={theme === 'light' ? 'Ganti ke Mode Gelap' : 'Ganti ke Mode Terang'}
+        className="no-print fixed top-3 right-3 z-[60] w-11 h-11 rounded-full flex items-center justify-center shadow-lg transition-all cursor-pointer border bg-white/90 hover:bg-white border-slate-200 text-slate-700 backdrop-blur-sm"
+      >
+        {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-amber-400" />}
+      </button>
+
       {/* Hidden file input for JSON import */}
       <input
         type="file"
@@ -366,8 +392,7 @@ export default function App() {
 
       {/* Left Sidebar Navigation (vertical menu) */}
       <Sidebar
-        currentTab={currentTab}
-        setCurrentTab={(tab) => {
+        currentTab={currentTab}        setCurrentTab={(tab) => {
           setCurrentTab(tab);
           if (tab === 'overview') {
             window.scrollTo({ top: 0, behavior: 'smooth' });

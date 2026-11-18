@@ -96,3 +96,78 @@
     overflow: visible !important;
   }
 }
+
+/* ================= LIGHT MODE (TEMA TERANG) =================
+   Dipasang lewat class "theme-light" pada <html>. Pemetaan warna:
+   latar gelap -> putih/abu terang, teks terang -> navy #0F172A. */
+
+html.theme-light,
+html.theme-light body {
+  background: #F8FAFC;
+}
+
+html.theme-light * {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Latar belakang */
+html.theme-light [class*="bg-slate-950"] { background-color: #F8FAFC !important; }
+html.theme-light [class*="bg-slate-900"] { background-color: #FFFFFF !important; }
+html.theme-light [class*="bg-slate-800"] { background-color: #F1F5F9 !important; }
+html.theme-light [class*="bg-slate-700"] { background-color: #E2E8F0 !important; }
+html.theme-light [class*="bg-emerald-950"] { background-color: #ECFDF5 !important; }
+html.theme-light [class*="bg-amber-950"] { background-color: #FFFBEB !important; }
+
+/* Strip gradien oranye di portal web jadi terang */
+html.theme-light section[class*="bg-gradient"] {
+  background: linear-gradient(to bottom, #FFFFFF, #F8FAFC) !important;
+}
+html.theme-light [class*="from-orange-950"] {
+  background: linear-gradient(to right, #FFF7ED, #FFFFFF) !important;
+}
+
+/* Teks */
+html.theme-light [class*="text-slate-300"],
+html.theme-light [class*="text-slate-200"],
+html.theme-light [class*="text-slate-100"] { color: #334155 !important; }
+html.theme-light [class*="text-slate-400"] { color: #64748B !important; }
+html.theme-light [class*="text-slate-500"] { color: #64748B !important; }
+html.theme-light .text-white { color: #0F172A !important; }
+
+/* Aksen lebih gelap agar kontras di latar putih */
+html.theme-light [class*="text-orange-4"] { color: #C2410C !important; }
+html.theme-light [class*="text-emerald-4"] { color: #059669 !important; }
+html.theme-light [class*="text-blue-4"] { color: #2563EB !important; }
+html.theme-light [class*="text-amber-3"],
+html.theme-light [class*="text-amber-4"] { color: #B45309 !important; }
+html.theme-light [class*="text-purple-4"] { color: #7E22CE !important; }
+html.theme-light [class*="text-red-3"],
+html.theme-light [class*="text-red-4"] { color: #DC2626 !important; }
+
+/* Teks putih di dalam tombol/kartu berwarna tetap putih */
+html.theme-light [class*="bg-orange-6"] .text-white,
+html.theme-light [class*="bg-orange-5"] .text-white,
+html.theme-light [class*="bg-emerald-6"] .text-white,
+html.theme-light [class*="bg-emerald-5"] .text-white,
+html.theme-light [class*="bg-red-6"] .text-white,
+html.theme-light [class*="bg-red-5"] .text-white,
+html.theme-light [class*="bg-blue-6"] .text-white {
+  color: #FFFFFF !important;
+}
+
+/* Teks putih di dalam banner gradien gelap (mis. kaver A4) tetap putih */
+html.theme-light [class*="bg-gradient-to-br"] .text-white,
+html.theme-light [class*="bg-gradient-to-r"] .text-white,
+html.theme-light [class*="text-transparent"] {
+  color: revert !important;
+}
+
+/* Garis pembatas */
+html.theme-light [class*="border-slate-8"] { border-color: #E2E8F0 !important; }
+html.theme-light [class*="border-slate-7"] { border-color: #E2E8F0 !important; }
+html.theme-light [class*="border-slate-6"] { border-color: #CBD5E1 !important; }
+
+/* Kartu putih bersih dengan shadow lembut */
+html.theme-light [class*="shadow-2xl"] { box-shadow: 0 10px 30px -12px rgba(15, 23, 42, 0.18) !important; }
+html.theme-light [class*="shadow-xl"] { box-shadow: 0 8px 24px -10px rgba(15, 23, 42, 0.15) !important; }
+html.theme-light [class*="shadow-lg"] { box-shadow: 0 6px 18px -8px rgba(15, 23, 42, 0.14) !important; }
