@@ -105,11 +105,11 @@ export default function App() {
   const [viewMode, setViewMode] = useState<'web' | 'a4'>('web');
   const [currentTab, setCurrentTab] = useState<string>('overview');
 
-  // Theme (persisted): default follows system preference on first visit
+  // Theme (persisted): light is the primary design; dark stays available via toggle
   const [theme, setTheme] = useState<AppTheme>(() => {
     const saved = localStorage.getItem(THEME_STORAGE_KEY);
     if (saved === 'light' || saved === 'dark') return saved;
-    return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    return 'light';
   });
 
   useEffect(() => {
