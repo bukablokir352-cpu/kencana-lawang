@@ -104,15 +104,15 @@
 
 html.theme-light,
 html.theme-light body {
-  background: #FAFAFA;
+  background: linear-gradient(to bottom, #93C5FD, #3B82F6) fixed !important;
 }
 
 html.theme-light * {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-/* --- Latar belakang: gradasi pudar diganti warna polos bersih --- */
-html.theme-light [class*="bg-slate-950"] { background-color: #FAFAFA !important; }
+/* --- Latar belakang: halaman memakai gradasi biru, kartu tetap putih --- */
+html.theme-light [class*="bg-slate-950"] { background-color: transparent !important; }
 html.theme-light [class*="bg-slate-900"] { background-color: #FFFFFF !important; }
 html.theme-light [class*="bg-slate-800"] { background-color: #F8FAFC !important; }
 html.theme-light [class*="bg-slate-700"] { background-color: #E2E8F0 !important; }
@@ -121,10 +121,10 @@ html.theme-light [class*="bg-amber-950"] { background-color: #FFFBEB !important;
 
 html.theme-light section[class*="bg-gradient"],
 html.theme-light header[class*="bg-gradient"] {
-  background: #FFFFFF !important;
+  background: transparent !important;
 }
 html.theme-light [class*="from-orange-950"] {
-  background: #F8FAFC !important;
+  background: rgba(255, 255, 255, 0.85) !important;
 }
 
 /* --- Teks: judul navy pekat, isi abu sedang --- */
@@ -158,11 +158,33 @@ html.theme-light [class*="bg-slate-900"].bg-slate-900 .text-white {
   color: #FFFFFF !important;
 }
 
+/* Teks di ATAS gradasi biru (bagian hero transparan) tetap PUTIH */
+html.theme-light section[class*="bg-gradient"] .text-white { color: #FFFFFF !important; }
+html.theme-light section[class*="bg-gradient"] [class*="text-slate-2"],
+html.theme-light section[class*="bg-gradient"] [class*="text-slate-3"],
+html.theme-light section[class*="bg-gradient"] [class*="text-slate-4"] { color: rgba(255, 255, 255, 0.92) !important; }
+html.theme-light section[class*="bg-gradient"] [class*="text-orange-3"],
+html.theme-light section[class*="bg-gradient"] [class*="text-orange-4"] { color: #FDE68A !important; }
+html.theme-light section[class*="bg-gradient"] [class*="text-emerald-4"] { color: #86EFAC !important; }
+html.theme-light section[class*="bg-gradient"] [class*="text-blue-4"] { color: #BFDBFE !important; }
+
 /* Teks putih di dalam banner gradien gelap (kaver A4) tetap putih */
 html.theme-light [class*="bg-gradient-to-br"] .text-white,
 html.theme-light [class*="bg-gradient-to-r"] .text-white {
   color: revert !important;
 }
+
+/* Teks di DALAM kartu putih/terang tetap gelap (menang atas aturan biru) */
+html.theme-light [class*="bg-slate-8"] .text-white,
+html.theme-light [class*="bg-slate-9"] .text-white { color: #1E293B !important; }
+html.theme-light [class*="bg-slate-8"] [class*="text-slate-2"],
+html.theme-light [class*="bg-slate-8"] [class*="text-slate-3"],
+html.theme-light [class*="bg-slate-8"] [class*="text-slate-4"] { color: #475569 !important; }
+html.theme-light [class*="bg-slate-8"] [class*="text-slate-5"] { color: #64748B !important; }
+html.theme-light [class*="bg-slate-8"] [class*="text-orange-3"],
+html.theme-light [class*="bg-slate-8"] [class*="text-orange-4"] { color: #DC2626 !important; }
+html.theme-light [class*="bg-slate-8"] [class*="text-emerald-4"] { color: #16A34A !important; }
+html.theme-light [class*="bg-slate-8"] [class*="text-blue-4"] { color: #2563EB !important; }
 
 /* --- Garis pemisah & bayangan sangat lembut --- */
 html.theme-light [class*="border-slate-8"],
