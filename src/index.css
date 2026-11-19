@@ -98,9 +98,11 @@
 }
 
 /* ================= TEMA TERANG (TAMPILAN UTAMA) =================
-   Dipasang lewat class "theme-light" pada <html>. Pemetaan warna sesuai
-   palet resmi: latar #FAFAFA, kartu #F8FAFC/putih, aksen merah #DC2626,
-   hijau #16A34A, biru #2563EB, judul #1E293B, isi #475569, garis #E2E8F0. */
+   Latar: gradasi biru #93C5FD -> #3B82F6 (atas ke bawah).
+   STRATEGI KETERBACAAN: gradasi biru hanya terlihat di latar halaman.
+   Semua teks berada di dalam kartu/panel BERLATAR PUTIH, jadi aturan tema
+   memetakan SEMUA teks ke warna gelap; teks putih hanya dipertahankan
+   di dalam tombol berwarna pekat. */
 
 html.theme-light,
 html.theme-light body {
@@ -111,23 +113,24 @@ html.theme-light * {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-/* --- Latar belakang: halaman memakai gradasi biru, kartu tetap putih --- */
-html.theme-light [class*="bg-slate-950"] { background-color: transparent !important; }
+/* --- Latar: kontainer halaman transparan, kartu/panel putih solid --- */
+html.theme-light [class*="bg-slate-950"] { background-color: #FFFFFF !important; }
 html.theme-light [class*="bg-slate-900"] { background-color: #FFFFFF !important; }
-html.theme-light [class*="bg-slate-800"] { background-color: #F8FAFC !important; }
+html.theme-light [class*="bg-slate-800"] { background-color: #F1F5F9 !important; }
 html.theme-light [class*="bg-slate-700"] { background-color: #E2E8F0 !important; }
 html.theme-light [class*="bg-emerald-950"] { background-color: #F0FDF4 !important; }
 html.theme-light [class*="bg-amber-950"] { background-color: #FFFBEB !important; }
 
+/* Bagian pembuka tanpa latar sendiri: biarkan gradasi biru tembus */
 html.theme-light section[class*="bg-gradient"],
 html.theme-light header[class*="bg-gradient"] {
   background: transparent !important;
 }
 html.theme-light [class*="from-orange-950"] {
-  background: rgba(255, 255, 255, 0.85) !important;
+  background: #FFFFFF !important;
 }
 
-/* --- Teks: judul navy pekat, isi abu sedang --- */
+/* --- Teks default: SEMUA jadi gelap (latar kartu selalu terang) --- */
 html.theme-light [class*="text-slate-300"],
 html.theme-light [class*="text-slate-200"],
 html.theme-light [class*="text-slate-100"] { color: #475569 !important; }
@@ -135,7 +138,7 @@ html.theme-light [class*="text-slate-400"],
 html.theme-light [class*="text-slate-500"] { color: #64748B !important; }
 html.theme-light .text-white { color: #1E293B !important; }
 
-/* Aksen resmi: merah BPBD, hijau, biru */
+/* Aksen resmi di latar terang */
 html.theme-light [class*="text-orange-4"],
 html.theme-light [class*="text-orange-3"] { color: #DC2626 !important; }
 html.theme-light [class*="text-emerald-4"] { color: #16A34A !important; }
@@ -146,55 +149,57 @@ html.theme-light [class*="text-purple-4"] { color: #7E22CE !important; }
 html.theme-light [class*="text-red-3"],
 html.theme-light [class*="text-red-4"] { color: #DC2626 !important; }
 
-/* Teks di atas latar berwarna (tombol/badge) tetap PUTIH */
+/* Teks putih HANYA di dalam tombol/badge berlatar pekat tetap PUTIH */
 html.theme-light [class*="bg-orange-6"] .text-white,
 html.theme-light [class*="bg-orange-5"] .text-white,
 html.theme-light [class*="bg-emerald-6"] .text-white,
 html.theme-light [class*="bg-emerald-5"] .text-white,
 html.theme-light [class*="bg-red-6"] .text-white,
 html.theme-light [class*="bg-red-5"] .text-white,
-html.theme-light [class*="bg-blue-6"] .text-white,
-html.theme-light [class*="bg-slate-900"].bg-slate-900 .text-white {
+html.theme-light [class*="bg-blue-6"] .text-white {
   color: #FFFFFF !important;
 }
 
-/* Teks di ATAS gradasi biru (bagian hero transparan) tetap PUTIH */
-html.theme-light section[class*="bg-gradient"] .text-white { color: #FFFFFF !important; }
-html.theme-light section[class*="bg-gradient"] [class*="text-slate-2"],
-html.theme-light section[class*="bg-gradient"] [class*="text-slate-3"],
-html.theme-light section[class*="bg-gradient"] [class*="text-slate-4"] { color: rgba(255, 255, 255, 0.92) !important; }
-html.theme-light section[class*="bg-gradient"] [class*="text-orange-3"],
-html.theme-light section[class*="bg-gradient"] [class*="text-orange-4"] { color: #FDE68A !important; }
-html.theme-light section[class*="bg-gradient"] [class*="text-emerald-4"] { color: #86EFAC !important; }
-html.theme-light section[class*="bg-gradient"] [class*="text-blue-4"] { color: #BFDBFE !important; }
+/* Badge berlatar bening (bg-orange-500/10 dsb.) jadi latar solid terang
+   supaya teks aksennya terbaca jelas */
+html.theme-light [class*="bg-orange-500/10"],
+html.theme-light [class*="bg-orange-500/20"] { background-color: #FEF2F2 !important; }
+html.theme-light [class*="bg-emerald-500/10"],
+html.theme-light [class*="bg-emerald-500/20"] { background-color: #F0FDF4 !important; }
+html.theme-light [class*="bg-blue-500/10"],
+html.theme-light [class*="bg-blue-500/20"] { background-color: #EFF6FF !important; }
 
-/* Teks putih di dalam banner gradien gelap (kaver A4) tetap putih */
+/* Teks putih di dalam banner gradien gelap (kaver A4, latar tetap gelap)
+   tetap putih */
 html.theme-light [class*="bg-gradient-to-br"] .text-white,
-html.theme-light [class*="bg-gradient-to-r"] .text-white {
+html.theme-light [class*="bg-gradient-to-r"] .text-white,
+html.theme-light [class*="from-slate-9"] .text-white {
   color: revert !important;
 }
-
-/* Teks di DALAM kartu putih/terang tetap gelap (menang atas aturan biru) */
-html.theme-light [class*="bg-slate-8"] .text-white,
-html.theme-light [class*="bg-slate-9"] .text-white { color: #1E293B !important; }
-html.theme-light [class*="bg-slate-8"] [class*="text-slate-2"],
-html.theme-light [class*="bg-slate-8"] [class*="text-slate-3"],
-html.theme-light [class*="bg-slate-8"] [class*="text-slate-4"] { color: #475569 !important; }
-html.theme-light [class*="bg-slate-8"] [class*="text-slate-5"] { color: #64748B !important; }
-html.theme-light [class*="bg-slate-8"] [class*="text-orange-3"],
-html.theme-light [class*="bg-slate-8"] [class*="text-orange-4"] { color: #DC2626 !important; }
-html.theme-light [class*="bg-slate-8"] [class*="text-emerald-4"] { color: #16A34A !important; }
-html.theme-light [class*="bg-slate-8"] [class*="text-blue-4"] { color: #2563EB !important; }
+html.theme-light [class*="from-slate-9"],
+html.theme-light [class*="via-slate-9"],
+html.theme-light [class*="to-slate-8"] {
+  background: linear-gradient(to bottom right, #1E293B, #0F172A) !important;
+}
+html.theme-light [class*="from-slate-9"] [class*="text-slate-2"],
+html.theme-light [class*="from-slate-9"] [class*="text-slate-3"],
+html.theme-light [class*="from-slate-9"] [class*="text-slate-4"] { color: #CBD5E1 !important; }
+html.theme-light [class*="from-slate-9"] [class*="text-orange-3"],
+html.theme-light [class*="from-slate-9"] [class*="text-orange-4"] { color: #FDBA74 !important; }
+html.theme-light [class*="from-slate-9"] [class*="text-slate-4"] { color: #94A3B8 !important; }
 
 /* --- Garis pemisah & bayangan sangat lembut --- */
 html.theme-light [class*="border-slate-8"],
 html.theme-light [class*="border-slate-7"] { border-color: #E2E8F0 !important; }
 html.theme-light [class*="border-slate-6"] { border-color: #E2E8F0 !important; }
+html.theme-light [class*="border-orange-5"],
+html.theme-light [class*="border-emerald-8"],
+html.theme-light [class*="border-amber-8"] { border-color: #E2E8F0 !important; }
 
 html.theme-light [class*="shadow-2xl"],
-html.theme-light [class*="shadow-xl"] { box-shadow: 0 6px 20px -8px rgba(30, 41, 59, 0.12) !important; }
+html.theme-light [class*="shadow-xl"] { box-shadow: 0 6px 20px -8px rgba(30, 41, 59, 0.16) !important; }
 html.theme-light [class*="shadow-lg"],
-html.theme-light [class*="shadow-md"] { box-shadow: 0 4px 14px -6px rgba(30, 41, 59, 0.10) !important; }
+html.theme-light [class*="shadow-md"] { box-shadow: 0 4px 14px -6px rgba(30, 41, 59, 0.12) !important; }
 
 /* Tombol utama BPBD: merah #DC2626; aksi positif hijau; informasi biru */
 html.theme-light [class*="bg-orange-6"] { background-color: #DC2626 !important; }
