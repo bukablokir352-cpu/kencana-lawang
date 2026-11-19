@@ -98,15 +98,12 @@
 }
 
 /* ================= TEMA TERANG (TAMPILAN UTAMA) =================
-   Latar: gradasi biru #93C5FD -> #3B82F6 (atas ke bawah).
-   STRATEGI KETERBACAAN: gradasi biru hanya terlihat di latar halaman.
-   Semua teks berada di dalam kartu/panel BERLATAR PUTIH, jadi aturan tema
-   memetakan SEMUA teks ke warna gelap; teks putih hanya dipertahankan
-   di dalam tombol berwarna pekat. */
+   Latar putih #F8FAFC, judul #0F172A, isi #334155. Tanpa aksen muda
+   (kuning/oranye muda) di latar terang — semua teks pekat dan terbaca. */
 
 html.theme-light,
 html.theme-light body {
-  background: linear-gradient(to bottom, #93C5FD, #3B82F6) fixed !important;
+  background: #F8FAFC !important;
 }
 
 html.theme-light * {
@@ -133,19 +130,26 @@ html.theme-light [class*="from-orange-950"] {
 /* --- Teks default: SEMUA jadi gelap (latar kartu selalu terang) --- */
 html.theme-light [class*="text-slate-300"],
 html.theme-light [class*="text-slate-200"],
-html.theme-light [class*="text-slate-100"] { color: #475569 !important; }
+html.theme-light [class*="text-slate-100"] { color: #334155 !important; }
 html.theme-light [class*="text-slate-400"],
-html.theme-light [class*="text-slate-500"] { color: #64748B !important; }
-html.theme-light .text-white { color: #1E293B !important; }
+html.theme-light [class*="text-slate-500"] { color: #475569 !important; }
+html.theme-light .text-white { color: #0F172A !important; }
 
-/* Aksen resmi di latar terang */
+/* Aksen resmi di latar terang — semuanya versi pekat, tanpa kuning muda */
 html.theme-light [class*="text-orange-4"],
-html.theme-light [class*="text-orange-3"] { color: #DC2626 !important; }
-html.theme-light [class*="text-emerald-4"] { color: #16A34A !important; }
-html.theme-light [class*="text-blue-4"] { color: #2563EB !important; }
+html.theme-light [class*="text-orange-3"],
 html.theme-light [class*="text-amber-3"],
-html.theme-light [class*="text-amber-4"] { color: #B45309 !important; }
+html.theme-light [class*="text-amber-4"],
+html.theme-light [class*="text-yellow-3"],
+html.theme-light [class*="text-yellow-4"] { color: #B45309 !important; }
+html.theme-light [class*="text-emerald-4"],
+html.theme-light [class*="text-emerald-3"],
+html.theme-light [class*="text-green-4"] { color: #15803D !important; }
+html.theme-light [class*="text-blue-4"],
+html.theme-light [class*="text-blue-3"] { color: #1D4ED8 !important; }
 html.theme-light [class*="text-purple-4"] { color: #7E22CE !important; }
+html.theme-light [class*="text-sky-4"],
+html.theme-light [class*="text-sky-3"] { color: #0369A1 !important; }
 html.theme-light [class*="text-red-3"],
 html.theme-light [class*="text-red-4"] { color: #DC2626 !important; }
 
@@ -186,7 +190,6 @@ html.theme-light [class*="from-slate-9"] [class*="text-slate-3"],
 html.theme-light [class*="from-slate-9"] [class*="text-slate-4"] { color: #CBD5E1 !important; }
 html.theme-light [class*="from-slate-9"] [class*="text-orange-3"],
 html.theme-light [class*="from-slate-9"] [class*="text-orange-4"] { color: #FDBA74 !important; }
-html.theme-light [class*="from-slate-9"] [class*="text-slate-4"] { color: #94A3B8 !important; }
 
 /* --- Garis pemisah & bayangan sangat lembut --- */
 html.theme-light [class*="border-slate-8"],
@@ -211,3 +214,16 @@ html.theme-light [class*="hover\\:bg-emerald-5"]:hover { background-color: #1580
 html.theme-light [class*="rounded-3xl"] { border-radius: 12px !important; }
 html.theme-light [class*="rounded-2xl"] { border-radius: 12px !important; }
 html.theme-light [class*="rounded-xl"] { border-radius: 10px !important; }
+
+/* ================= TEMA GELAP =================
+   Latar #0F172A, teks putih. Notifikasi tetap di kartu lebih terang
+   (#1E293B) agar teks terangnya kontras. */
+
+html:not(.theme-light),
+html:not(.theme-light) body {
+  background: #0F172A !important;
+}
+html:not(.theme-light) [class*="bg-slate-950"] { background-color: #0F172A !important; }
+html:not(.theme-light) [class*="bg-slate-900"] { background-color: #1E293B !important; }
+html:not(.theme-light) [class*="text-slate-100"],
+html:not(.theme-light) [class*="text-slate-200"] { color: #FFFFFF !important; }
